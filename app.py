@@ -322,7 +322,6 @@ factor_conversion = 1 if unidad == "L" else 1000
 cantidad = st.sidebar.number_input(
     "Número de peces", 
     min_value=1, 
-    value=1, 
     key="cantidad"
 )
 
