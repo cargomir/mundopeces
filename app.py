@@ -302,10 +302,10 @@ else:
 
 # === Cálculo  ===
 
-# Escoger unidad de medida 
+# Escoger unidad de medida  
 unidad_opciones = {
     "Litros (L)": "L",
-    "Metros Cúbicos": "m3"
+    "Metros Cúbicos (m³)": "m3"
 }
 
 unidad_label = st.sidebar.radio(
@@ -409,7 +409,10 @@ tamaño_base_litros = fila_ficha["Tamaño Mínimo Acuario"]
 tamaño_total_litros = tamaño_base_litros * cantidad
 tamaño_convertido = tamaño_total_litros / factor_conversion
 unidad_display = "litros" if unidad == "L" else "m³"
-tamaño_formateado = f"{tamaño_convertido:.1f}".replace(".", ",") if unidad == "m3" else f"{int(tamaño_convertido)}"
+tamaño_formateado = (
+    f"{tamaño_convertido:.2f}".replace(".", ",") if unidad == "m3"
+    else f"{int(tamaño_convertido)}"
+)
 
 # === Ficha HTML con datos principales ===
 ficha_html = f"""
@@ -443,7 +446,7 @@ ficha_html = f"""
     <p><strong>🌡️ Temperatura mínima:</strong> {fila_ficha['Temperatura Mínima']} °C</p>
     <p><strong>🌡️ Temperatura máxima:</strong> {fila_ficha['Temperatura Máxima']} °C</p>
     <p><strong>📏 Tamaño corporal máximo:</strong> {fila_ficha['Tamaño Corporal Máximo']} cm</p>
-    <p><strong>🏠 Tamaño mínimo del acuario:</strong> {tamaño_formateado} {unidad_display}</p>
+    <p><strong>🏠 Tamaño mínimo del acuario o estanque:</strong> {tamaño_formateado} {unidad_display}</p>
 </div>
 """
 st.markdown(ficha_html, unsafe_allow_html=True)
@@ -458,9 +461,10 @@ if not recurso_fila.empty:
         "Descripción": "Descripción",
         "Origen": "Origen",
         "Alimentación": "Alimentación",
-        "Dimorfismo sexual": "Dimorfismo Sexual",
-        "Otros parámetros": "Otros parámetros",
-        "Ambiente": "Ambiente",
+        "Dimorfismo sexual": "Dimorfismo sexual",
+        "Reprodución": "Reproducción",
+        "Acidez y dureza del dgua": "Acidez y Dureza del Agua",
+        "Enriquecimiento ambiental": "Ambiente",
         "Filtración": "Filtracion"
     }
 
