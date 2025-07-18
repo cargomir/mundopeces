@@ -442,7 +442,7 @@ ficha_html = f"""
 <div class="ficha-bloque">
     <p><strong>🌍 Especie:</strong> {fila_ficha['Especie']}</p>
     <p><strong>🌡️ Rango de temperatura:</strong> {fila_ficha['Rango de temperatura']} °C</p>
-    <p><strong>⚗️ pH:</strong> {fila_ficha['pH']} °C</p>
+    <p><strong>⚗️ pH:</strong> {fila_ficha['pH']}</p>
     <p><strong>📏 Dureza de carbonatos (KH):</strong> {fila_ficha['Dureza de carbonatos (KH)']} dKH</p>
     <p><strong>📏 Dureza general (GH):</strong> {fila_ficha['Dureza general (GH)']} dGH</p>
     <p><strong>🐟 Clasificación según tipo de nado:</strong> {fila_ficha['Tipo de nado']}</p>
@@ -462,7 +462,7 @@ if not recurso_fila.empty:
         "Origen": "Origen",
         "Alimentación": "Alimentación",
         "Reprodución": "Reproducción",
-        "Biotopo para peces de agua fría-atemplada": "Ambiente",
+        "Biotopo para peces de agua fría-atemplada": "Biotopo",
         "Datos curiosos": "Datos curiosos"
     }
 
