@@ -344,13 +344,15 @@ else:
 # === Obtener datos de la ficha seleccionada ===
 campos = fila_ficha.drop([col for col in [
     "Especie",
-    "Temperatura Mínima",
-    "Temperatura Máxima",
-    "Tamaño Corporal Máximo"
+    "Rango de temperatura",
+    "pH",
+    "Dureza de carbonatos (KH)",
+    "Dureza general (GH)",
+    "Clasificación según tipo de nado"
 ] if col in fila_ficha.index])
 
 datos = fila_ficha.drop([col for col in [
-    "Tamaño Mínimo Acuario"
+    "Tamaño mínimo acuario"
 ] if col in fila_ficha.index])
 
 # === Botón de limpiar filtros ===
@@ -371,13 +373,10 @@ st.sidebar.markdown(f"""
 <div style='text-align: justify; font-style: italic; font-size: 13px;'>
     <p><b>Mundo Peces Agua Fría</b> es una aplicación interactiva enfocada en peces de agua fría creada por aficionados de la acuariofilia, que buscan compartir tips de crianza y cuidados.</p>
     <p>Actualmente incluye <b>{total_peces}</b> variedades de peces.</p>
-    <p>Contenido por Scarlet Silva Faúndez y xxx (Santiago de Chile, 2025).</p>
+    <p>Contenido por Scarlet Silva Faúndez y Constanza Duarte (Santiago de Chile, 2025).</p>
     <p style="margin-top:10px;">
-        <a href="mailto:sscarletandrea@gmail.com" target="_blank" style="text-decoration: none;">
-            <img src="https://img.icons8.com/color/24/000000/gmail-new.png" style="vertical-align: middle;"/> sscarletandrea@gmail.com
-        </a><br>
-        <a href="mailto:xxx@gmail.com" target="_blank" style="text-decoration: none;">
-            <img src="https://img.icons8.com/color/24/000000/gmail-new.png" style="vertical-align: middle;"/> xxx@gmail.com
+        <a href="mailto:mundopecesaguafria@gmail.com" target="_blank" style="text-decoration: none;">
+            <img src="https://img.icons8.com/color/24/000000/gmail-new.png" style="vertical-align: middle;"/> mundopecesaguafria@gmail.com
         </a><br>
     <p>Aplicación desarrollada por Carlos Andrés González Miranda (Santiago de Chile, 2025).</p>
     <p style="margin-top:10px;">
@@ -404,7 +403,7 @@ else:
     st.info("Imagen no disponible para este pez.") 
 
 # === Calcular tamaño mínimo del acuario ajustado a la cantidad de peces y unidad ===
-tamaño_base_litros = fila_ficha["Tamaño Mínimo Acuario"]
+tamaño_base_litros = fila_ficha["Tamaño mínimo acuario"]
 tamaño_total_litros = tamaño_base_litros * cantidad
 tamaño_convertido = tamaño_total_litros / factor_conversion
 unidad_display = "litros" if unidad == "L" else "m³"
@@ -442,9 +441,11 @@ ficha_html = f"""
 
 <div class="ficha-bloque">
     <p><strong>🌍 Especie:</strong> {fila_ficha['Especie']}</p>
-    <p><strong>🌡️ Temperatura mínima:</strong> {fila_ficha['Temperatura Mínima']} °C</p>
-    <p><strong>🌡️ Temperatura máxima:</strong> {fila_ficha['Temperatura Máxima']} °C</p>
-    <p><strong>📏 Tamaño corporal máximo:</strong> {fila_ficha['Tamaño Corporal Máximo']} cm</p>
+    <p><strong>🌡️ Rango de temperatura:</strong> {fila_ficha['Rango de temperatura']} °C</p>
+    <p><strong>⚗️ pH:</strong> {fila_ficha['pH']} °C</p>
+    <p><strong>📏 Dureza de carbonatos (KH):</strong> {fila_ficha['Dureza de carbonatos (KH)']} dKH</p>
+    <p><strong>📏 Dureza general (GH):</strong> {fila_ficha['Dureza general (GH)']} dGH</p>
+    <p><strong>🐟 Clasificación según tipo de nado:</strong> {fila_ficha['Tipo de nado']}</p>
     <p><strong>🏠 Tamaño mínimo del acuario o estanque:</strong> {tamaño_formateado} {unidad_display}</p>
 </div>
 """
@@ -460,11 +461,9 @@ if not recurso_fila.empty:
         "Descripción": "Descripción",
         "Origen": "Origen",
         "Alimentación": "Alimentación",
-        "Dimorfismo sexual": "Dimorfismo sexual",
         "Reprodución": "Reproducción",
-        "Acidez y dureza del dgua": "Acidez y Dureza del Agua",
-        "Enriquecimiento ambiental": "Ambiente",
-        "Filtración": "Filtracion"
+        "Biotopo para peces de agua fría-atemplada": "Ambiente",
+        "Datos curiosos": "Datos curiosos"
     }
 
     hay_variedad = any(
@@ -491,41 +490,3 @@ if not recurso_fila.empty:
 
         for titulo, campo in campos_variedad.items():
             mostrar_bloque(titulo, campo)
-
-    # === Recursos adicionales ===
-    hay_recursos = any([
-        pd.notna(fila.get("Datos Curiosos")) and str(fila.get("Datos Curiosos")).strip() != "",
-        pd.notna(fila.get("texto_enlace_1")) and pd.notna(fila.get("url_1")),
-        pd.notna(fila.get("texto_enlace_2")) and pd.notna(fila.get("url_2")),
-    ])
-
-    if hay_recursos:
-        st.markdown("---")
-        st.markdown(
-            "<h2 style='color: #2c3e50; font-size: 36px; font-weight: bold;'>Recursos adicionales</h2>",
-            unsafe_allow_html=True
-        )
-
-        # Bloque de datos curiosos
-        if pd.notna(fila.get("Datos Curiosos")) and str(fila.get("Datos Curiosos")).strip() != "":
-            st.markdown("### Datos curiosos")
-            st.markdown(
-                f"<div style='font-size: 15px; text-align: justify;'>{fila['Datos Curiosos'].strip()}</div>",
-                unsafe_allow_html=True
-            )
-
-        # Enlace 1
-        if pd.notna(fila.get("texto_enlace_1")) and pd.notna(fila.get("url_1")):
-            st.markdown("### Video recomendado")
-            st.markdown(
-                f'<a href="{fila["url_1"]}" target="_blank"> {fila["texto_enlace_1"]}</a>',
-                unsafe_allow_html=True
-            )
-
-        # Enlace 2
-        if pd.notna(fila.get("texto_enlace_2")) and pd.notna(fila.get("url_2")):
-            st.markdown("### Mira también lo siguiente")
-            st.markdown(
-                f'<a href="{fila["url_2"]}" target="_blank"> {fila["texto_enlace_2"]}</a>',
-                unsafe_allow_html=True
-            )
